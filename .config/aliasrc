@@ -14,7 +14,6 @@ alias ka="killall" \
 	x="sxiv -ft *" \
 	sdn="sudo shutdown -h now" \
 	gua="git remote | xargs -L1 git push --all" \
-	ls="ls -hN --color=auto --group-directories-first" \
 	grep="grep --color=auto" \
 	diff="diff --color=auto" \
 	ccat="highlight --out-format=ansi" \
@@ -25,6 +24,11 @@ alias ka="killall" \
 	upc="sudo pacman -Syu; pkill -RTMIN+8 i3blocks" \
 	lsp="pacman -Qett --color=always | less" \
 	ffmpeg="ffmpeg -hide_banner"
+if [ "$OSTYPE"  != linux-gnu ]; then # Is this the MacOS system
+    alias ls="gls -hNFp --color --group-directories-first"
+else
+    alias ls="ls -hNFp --color --group-directories-first"
+fi
 
 command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d" # Use neovim for vim if present.
 
