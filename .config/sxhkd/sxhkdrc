@@ -10,7 +10,7 @@ super + e
 super + m
 	$TERMINAL -e ncmpcpp
 super + n
-	$TERMINAL -e newsboat
+	$TERMINAL -e sncli
 super + i
 	$TERMINAL -e htop
 super + y
@@ -22,7 +22,7 @@ super + shift + c
 super + shift + e
 	tutorialvids
 super + w
-	webby | xargs -r $BROWSER
+	$BROWSER
 super + shift + w
 	$BROWSER
 super + shift + g
@@ -66,9 +66,9 @@ XF86AudioPrev
 XF86AudioStop
 	lmc toggle
 XF86MonBrightnessDown
-	xbacklight -dec 15
+	xbacklight -dec 5
 XF86MonBrightnessUp
-	xbacklight -inc 15
+	xbacklight -inc 5
 
 
 # Recording
