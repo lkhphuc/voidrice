@@ -1,4 +1,4 @@
-# vim: filetype=i3
+# vim: filetype=i3config
 # File originally by Luke Smith <https://lukesmith.xyz>
 
 # This config file will use environmental variables such as $BROWSER and $TERMINAL.
