@@ -23,7 +23,8 @@ alias ka="killall" \
 	ref="shortcuts >/dev/null; source ~/.config/shortcutrc" \
 	upc="sudo pacman -Syu; pkill -RTMIN+8 i3blocks" \
 	lsp="pacman -Qett --color=always | less" \
-	ffmpeg="ffmpeg -hide_banner"
+	ffmpeg="ffmpeg -hide_banner" \
+    sudo="sudo"
 if [ "$OSTYPE"  != linux-gnu ]; then # Is this the MacOS system
     alias ls="gls -hNFp --color --group-directories-first"
 else
