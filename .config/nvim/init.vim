@@ -1,4 +1,3 @@
-let mapleader=","
 " Automatically install Vim Plug
     if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
       silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -6,7 +5,8 @@ let mapleader=","
       autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
     endif
 
-call plug#begin('~/.local/share/nvim/plugged')
+" Install plugins
+    call plug#begin('~/.local/share/nvim/plugged')
 	Plug 'tpope/vim-sensible'
 	Plug 'tpope/vim-fugitive'
 	Plug 'tpope/vim-commentary'
@@ -36,8 +36,7 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'jph00/swift-apple'
 	" Visual
     Plug 'szw/vim-maximizer'
-    Plug 'Konfekt/FastFold'
-    Plug 'pseewald/vim-anyfold'
+    " Plug 'pseewald/vim-anyfold'
 	Plug 'itchyny/lightline.vim'
 	Plug 'mhinz/vim-signify'
 	Plug 'sheerun/vim-polyglot'
@@ -45,9 +44,9 @@ call plug#begin('~/.local/share/nvim/plugged')
 	Plug 'ryanoasis/vim-devicons'
     Plug 'kovetskiy/sxhkd-vim'
     Plug 'mboughaba/i3config.vim'
-call plug#end()
-
+    call plug#end()
 " General nvim settings
+    let mapleader=","
     lang en_US.UTF-8
 	set hidden
 	set noshowmode
@@ -63,12 +62,11 @@ call plug#end()
 	set sidescroll=1
 	set breakindent breakindentopt=shift:2,sbr
 	set linebreak formatoptions+=l " Ensures word-wrap does not split words
-	" Search config
-	set ignorecase smartcase
+    set foldmethod=indent foldlevel=1 foldclose=all
+	set ignorecase smartcase " Search config
     set updatetime=300 " Smaller updatetime for CursorHold & CursorHoldI
     set shortmess+=c " don't give |ins-completion-menu| messages.
-    " Show trailing whitepace and spaces before a tab:
-    :highlight ExtraWhitespace ctermbg=red guibg=red
+    :highlight ExtraWhitespace ctermbg=red guibg=red " Show trailing whitespace
     :autocmd Syntax * syn match ExtraWhitespace /\s\+$\| \+\ze\t/
 	set wildmode=longest,list,full
 	set splitbelow splitright
@@ -77,7 +75,7 @@ call plug#end()
     nnoremap <silent><C-w>m :MaximizerToggle<CR>
     vnoremap <silent><C-w>m :MaximizerToggle<CR>gv
     inoremap <silent><C-w>m <C-o>:MaximizerToggle<CR>
-	nnoremap <space> za
+	nnoremap <space> zA
 	vnoremap <space> zf
 	nnoremap <leader>z zMzv
 	nnoremap n nzv
@@ -86,11 +84,6 @@ call plug#end()
     tnoremap <Esc> <C-\><C-n>:q!<CR>
     " Spell-check set to <leader>o, 'o' for 'orthography':
     map <leader>o :setlocal spell! spelllang=en_us<CR>
-
-    filetype plugin indent on
-    autocmd Filetype * AnyFoldActivate
-    " let g:anyfold_fold_comments=1
-    " hi Folded term=NONE cterm=NONE
 
 " Fzf.vim
 	nnoremap <leader>h :History<CR>
