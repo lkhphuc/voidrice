@@ -41,7 +41,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 	Plug 'itchyny/lightline.vim'
 	Plug 'mhinz/vim-signify'
 	Plug 'sheerun/vim-polyglot'
-	Plug 'dracula/vim', {'as': 'dracula'}
+    Plug 'morhetz/gruvbox'
 	Plug 'ryanoasis/vim-devicons'
     Plug 'kovetskiy/sxhkd-vim'
     Plug 'mboughaba/i3config.vim'
@@ -265,5 +265,7 @@ call plug#end()
         return winwidth(0) > 120 ? status : env
     endfunction
 " Theme
-	colo dracula
+    colo gruvbox
 	hi Normal guibg=NONE ctermbg=NONE
+    " set termguicolors
+
