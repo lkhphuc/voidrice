@@ -1,225 +1,264 @@
-let mapleader =","
+" Automatically install Vim Plug
+    if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+      silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
 
-if ! filereadable(expand('~/.config/nvim/autoload/plug.vim'))
-	echo "Downloading junegunn/vim-plug to manage plugins..."
-	silent !mkdir -p ~/.config/nvim/autoload/
-	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ~/.config/nvim/autoload/plug.vim
-endif
-
-call plug#begin('~/.config/nvim/plugged')
-Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdtree'
-Plug 'junegunn/goyo.vim'
-Plug 'PotatoesMaster/i3-vim-syntax'
-Plug 'jreybert/vimagit'
-Plug 'LukeSmithxyz/vimling'
-Plug 'vimwiki/vimwiki'
-Plug 'bling/vim-airline'
-Plug 'tpope/vim-commentary'
-Plug 'vifm/vifm.vim'
-Plug 'kovetskiy/sxhkd-vim'
-call plug#end()
-
-set bg=light
-set go=a
-set mouse=a
-set nohlsearch
-set clipboard+=unnamedplus
-
-" Some basics:
-	nnoremap c "_c
-	set nocompatible
-	filetype plugin on
-	syntax on
-	set encoding=utf-8
-	set number relativenumber
-" Enable autocompletion:
+" Install plugins
+    call plug#begin('~/.local/share/nvim/plugged')
+	Plug 'tpope/vim-sensible'
+	Plug 'tpope/vim-fugitive'
+	Plug 'tpope/vim-commentary'
+	Plug 'tpope/vim-abolish'
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-unimpaired'
+    Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-eunuch'
+	Plug 'junegunn/fzf', {'dir': '~/.fzf/', 'do': './install -all'}
+	Plug 'junegunn/fzf.vim'
+    Plug 'vimwiki/vimwiki'
+    Plug 'junegunn/goyo.vim'
+	Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+	Plug 'yuttie/comfortable-motion.vim'
+    Plug 'michaeljsmith/vim-indent-object'
+    " Tmux
+	Plug 'christoomey/vim-tmux-navigator'
+	Plug 'tmux-plugins/vim-tmux'
+    Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
+	Plug 'honza/vim-snippets'
+	Plug 'wellle/tmux-complete.vim'
+    Plug 'ludovicchabant/vim-gutentags'
+    Plug 'majutsushi/tagbar'
+	" Python
+	Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+    " Swift
+    Plug 'jph00/swift-apple'
+	" Visual
+    Plug 'szw/vim-maximizer'
+    " Plug 'pseewald/vim-anyfold'
+	Plug 'itchyny/lightline.vim'
+	Plug 'mhinz/vim-signify'
+	Plug 'sheerun/vim-polyglot'
+    Plug 'morhetz/gruvbox'
+	Plug 'ryanoasis/vim-devicons'
+    Plug 'kovetskiy/sxhkd-vim'
+    Plug 'mboughaba/i3config.vim'
+    call plug#end()
+" General nvim settings
+    let mapleader=","
+    lang en_US.UTF-8
+	set hidden
+	set noshowmode
+	set mouse=a
+    set go=a  "GUI only
+    set clipboard+=unnamedplus
+	set dir='/tmp/,~/tmp,/var/tmp,.'
+	set expandtab tabstop=4
+	set shiftwidth=4
+	set relativenumber number
+    set signcolumn=yes
+	set cursorline
+	set sidescroll=1
+	set breakindent breakindentopt=shift:2,sbr
+	set linebreak formatoptions+=l " Ensures word-wrap does not split words
+    set foldmethod=indent foldlevel=1 foldclose=all
+	set ignorecase smartcase " Search config
+    set updatetime=300 " Smaller updatetime for CursorHold & CursorHoldI
+    set shortmess+=c " don't give |ins-completion-menu| messages.
+    :highlight ExtraWhitespace ctermbg=red guibg=red " Show trailing whitespace
+    :autocmd Syntax * syn match ExtraWhitespace /\s\+$\| \+\ze\t/
 	set wildmode=longest,list,full
-" Disables automatic commenting on newline:
-	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
-" Goyo plugin makes text more readable when writing prose:
-	map <leader>f :Goyo \| set bg=light \| set linebreak<CR>
-
-" Spell-check set to <leader>o, 'o' for 'orthography':
-	map <leader>o :setlocal spell! spelllang=en_us<CR>
-
-" Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
 	set splitbelow splitright
+" Mapping
+	nnoremap c "_c
+    nnoremap <silent><C-w>m :MaximizerToggle<CR>
+    vnoremap <silent><C-w>m :MaximizerToggle<CR>gv
+    inoremap <silent><C-w>m <C-o>:MaximizerToggle<CR>
+	nnoremap <space> zA
+	vnoremap <space> zf
+	nnoremap <leader>z zMzv
+	nnoremap n nzv
+	nnoremap N Nzv
+    nnoremap <esc> :noh<return><esc>
+    tnoremap <Esc> <C-\><C-n>:q!<CR>
+    " Spell-check set to <leader>o, 'o' for 'orthography':
+    map <leader>o :setlocal spell! spelllang=en_us<CR>
 
-" Nerd tree
-	map <leader>n :NERDTreeToggle<CR>
-	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Fzf.vim
+	nnoremap <leader>h :History<CR>
+	nnoremap <leader>b :Buffers<CR>
+	nnoremap <leader>t :Files<CR>
+    nnoremap <leader>gf :GitFiles<CR>
+    nnoremap <leader>l :Lines<CR>
+	nnoremap <leader>a :Ag<CR>
+    nnoremap <leader>rg :Rg<CR>
+" NERDTree
+    map <C-n> :NERDTreeToggle<CR>
+    let g:WebDevIconsNerdTreeBeforeGlyphPadding = ""
+    let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
+    " Disable arrow icons at the left side of folders for NERDTree.
+    let g:NERDTreeDirArrowExpandable = "\u00a0"
+    let g:NERDTreeDirArrowCollapsible = "\u00a0"
+    highlight! link NERDTreeFlags NERDTreeDir
+	autocmd BufWritePre * %s/\s\+$//e " Automatically deletes all trailing whitespace on save.
+" Comfortable motion
+	let g:comfortable_motion_scroll_down_key = "j"
+	let g:comfortable_motion_scroll_up_key = "k"
+	noremap <silent> <ScrollWheelDown> :call comfortable_motion#flick(40)<CR>
+	noremap <silent> <ScrollWheelUp>   :call comfortable_motion#flick(-40)<CR>
+" Coc
+    let g:coc_global_extensions = ["coc-python", "coc-snippets", "coc-json", "coc-ccls", "coc-tabnine"]
 
-" vimling:
-	nm <leader>d :call ToggleDeadKeys()<CR>
-	imap <leader>d <esc>:call ToggleDeadKeys()<CR>a
-	nm <leader>i :call ToggleIPA()<CR>
-	imap <leader>i <esc>:call ToggleIPA()<CR>a
-	nm <leader>q :call ToggleProse()<CR>
+    " Use `[c` and `]c` for navigate diagnostics
+    nmap <silent> [c <Plug>(coc-diagnostic-prev)
+    nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
-" Shortcutting split navigation, saving a keypress:
-	map <C-h> <C-w>h
-	map <C-j> <C-w>j
-	map <C-k> <C-w>k
-	map <C-l> <C-w>l
+    " Remap keys for gotos
+    nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> g[ <Plug>(coc-declaration)
+    nmap <silent> gy <Plug>(coc-type-definition)
+    nmap <silent> gi <Plug>(coc-implementation)
+    nmap <silent> gr <Plug>(coc-references)
 
-" Check file in shellcheck:
-	map <leader>s :!clear && shellcheck %<CR>
+    " Highlight symbol under cursor on CursorHold
+    autocmd CursorHold * silent call CocActionAsync('highlight')
+    autocmd CursorHoldI * silent call CocActionAsync('showSignatureHelp')
 
-" Open my bibliography file in split
-	map <leader>b :vsp<space>$BIB<CR>
-	map <leader>r :vsp<space>$REFER<CR>
+    " Remap for rename current word
+    nmap <leader>rn <Plug>(coc-rename)
 
-" Replace all is aliased to S.
-	nnoremap S :%s//g<Left><Left>
+    " Remap for format selected region
+    vmap <leader>cf  <Plug>(coc-format-selected)
+    nmap <leader>cf  <Plug>(coc-format-selected)
 
-" Compile document, be it groff/LaTeX/markdown/etc.
-	map <leader>c :w! \| !compiler <c-r>%<CR>
+    augroup mygroup
+      autocmd!
+      " Setup formatexpr specified filetype(s).
+      autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+      " Update signature help on jump placeholder
+      autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+    augroup end
 
-" Open corresponding .pdf/.html or preview
-	map <leader>p :!opout <c-r>%<CR><CR>
+    " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+    vmap <leader>ca  <Plug>(coc-codeaction-selected)
+    nmap <leader>ca  <Plug>(coc-codeaction-selected)
 
-" Runs a script that cleans out tex build files whenever I close out of a .tex file.
-	autocmd VimLeave *.tex !texclear %
+    " Remap for do codeAction of current line
+    nmap <leader>caa  <Plug>(coc-codeaction)
+    " Fix autofix problem of current line
+    nmap <leader>cqf  <Plug>(coc-fix-current)
 
-" Ensure files are read as what I want:
-	let g:vimwiki_ext2syntax = {'.Rmd': 'markdown', '.rmd': 'markdown','.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
-	let g:vimwiki_list = [{'path': '~/vimwiki', 'syntax': 'markdown', 'ext': '.md'}]
-	autocmd BufRead,BufNewFile /tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
-	autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set filetype=groff
-	autocmd BufRead,BufNewFile *.tex set filetype=tex
+    " Use `:Format` for format current buffer
+    command! -nargs=0 Format :call CocAction('format')
 
-" Enable Goyo by default for mutt writting
-	" Goyo's width will be the line limit in mutt.
-	autocmd BufRead,BufNewFile /tmp/neomutt* let g:goyo_width=80
-	autocmd BufRead,BufNewFile /tmp/neomutt* :Goyo \| set bg=light
+    " Coc K to show documentation
+    function! s:show_documentation()
+      if &filetype == 'vim'
+        execute 'h '.expand('<cword>')
+      else
+        call CocAction('doHover')
+      endif
+    endfunction
+    nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-" Automatically deletes all trailing whitespace on save.
-	autocmd BufWritePre * %s/\s\+$//e
+    " Use tab for trigger completion, completion confirm, snippets expand and
+    " jump
+    function! s:check_back_space() abort
+      let col = col('.') - 1
+      return !col || getline('.')[col - 1]  =~# '\s'
+    endfunction
+    inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ coc#expandableOrJumpable() ? coc#rpc#request('doKeymap', ['snippets-expand-jump','']) :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+    inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+    imap <C-j> <Plug>(coc-snippets-expand-jump)
+" tags
+    nmap <F8> :TagbarToggle<CR>
+    augroup MyGutentagsStatusLineRefresher
+        autocmd!
+        autocmd User GutentagsUpdating call lightline#update()
+        autocmd User GutentagsUpdated call lightline#update()
+    augroup END
+    let g:gutentags_exclude_project_root = ['/usr/local', $HOME]
+" Python
+	let g:cellmode_tmux_panenumber='1'
+    let g:cellmode_default_mappings='0'
+    vmap <silent> <C-c> :call RunTmuxPythonChunk()<CR>
+	autocmd FileType python nmap <silent> <leader>sr :Semshi rename<CR>
+	autocmd FileType python nmap <silent> <leader>ss :Semshi goto name next<CR>
+	autocmd FileType python nmap <silent> <leader>sS :Semshi goto name prev<CR>
+	autocmd FileType python nmap <silent> <leader>sc :Semshi goto class next<CR>
+	autocmd FileType python nmap <silent> <leader>sC :Semshi goto class prev<CR>
+	autocmd FileType python nmap <silent> <leader>sf :Semshi goto function next<CR> zv
+	autocmd FileType python nmap <silent> <leader>sF :Semshi goto function prev<CR> zv
+	autocmd FileType python nmap <silent> <leader>se :Semshi goto error<CR>
+" Signify - Git sign bar
+	let g:signify_vcs_list = ['git']
+	nnoremap <leader>gt :SignifyToggle<CR>
+	nnoremap <leader>gh :SignifyToggleHighlight<CR>
+	nnoremap <leader>gr :SignifyRefresh<CR>
+	nnoremap <leader>gd :SignifyDebug<CR>
+	nmap <leader>gj <plug>(signify-next-hunk)
+	nmap <leader>gk <plug>(signify-prev-hunk)
+" Lightline
+	let g:lightline = {
+		\ 'component': {
+		\ },
+		\ 'active': {
+        \   'left': [ [ 'mode', 'paste' ],
+        \             [ 'readonly', 'filename', 'modified'] ],
+		\   'right': [ [ 'percent' ,'lineinfo' ],
+		\              [ 'fileencoding', 'filetype', 'fugitive' ],
+        \              [ 'cocstatus', 'gutentags' ] ]
+		\ },
+		\ 'component_function': {
+        \   'gutentags': 'gutentags#statusline',
+        \   'cocstatus': 'LightlineCocStatus',
+		\   'readonly': 'LightlineReadonly',
+		\   'fugitive': 'LightlineFugitive',
+        \   'filename': 'LightlineFilename',
+		\ },
+		\ 'separator': { 'left': '', 'right': '' },
+		\ 'subseparator': { 'left': '', 'right': '' },
+		\}
 
-" When shortcut files are updated, renew bash and vifm configs with new material:
-	autocmd BufWritePost ~/.config/bmdirs,~/.config/bmfiles !shortcuts
+	function! LightlineReadonly()
+		return &readonly ? '' : ''
+	endfunction
+	function! LightlineFugitive()
+		if exists('*fugitive#head')
+			let branch = fugitive#head()
+			return branch !=# '' ? ''.branch : ''
+		endif
+		return ''
+	endfunction
+	function! LightlineFilename()
+		let name = ""
+		let subs = split(expand('%'), "/")
+		let i = 1
+		for s in subs
+			let parent = name
+			if  i == len(subs)
+				let name = parent . '/' . s
+			elseif i == 1
+				let name = s
+			else
+				let name = parent . '/' . strpart(s, 0, 2)
+			endif
+			let i += 1
+		endfor
+	  return name
+	endfunction
+    function! LightlineCocStatus()
+        let status = coc#status()
+        let env = matchstr(status, "(\'.*\':")[2:-3]
+        return winwidth(0) > 120 ? status : env
+    endfunction
+" Theme
+    colo gruvbox
+	hi Normal guibg=NONE ctermbg=NONE
+    " set termguicolors
 
-" Update binds when sxhkdrc is updated.
-	autocmd BufWritePost *sxhkdrc !pkill -USR1 sxhkd
-
-" Run xrdb whenever Xdefaults or Xresources are updated.
-	autocmd BufWritePost *Xresources,*Xdefaults !xrdb %
-
-" Navigating with guides
-	inoremap <leader><leader> <Esc>/<++><Enter>"_c4l
-	vnoremap <leader><leader> <Esc>/<++><Enter>"_c4l
-	map <leader><leader> <Esc>/<++><Enter>"_c4l
-
-"""LATEX
-	" Word count:
-	autocmd FileType tex map <leader>w :w !detex \| wc -w<CR>
-	" Code snippets
-	autocmd FileType tex inoremap ,fr \begin{frame}<Enter>\frametitle{}<Enter><Enter><++><Enter><Enter>\end{frame}<Enter><Enter><++><Esc>6kf}i
-	autocmd FileType tex inoremap ,fi \begin{fitch}<Enter><Enter>\end{fitch}<Enter><Enter><++><Esc>3kA
-	autocmd FileType tex inoremap ,exe \begin{exe}<Enter>\ex<Space><Enter>\end{exe}<Enter><Enter><++><Esc>3kA
-	autocmd FileType tex inoremap ,em \emph{}<++><Esc>T{i
-	autocmd FileType tex inoremap ,bf \textbf{}<++><Esc>T{i
-	autocmd FileType tex vnoremap , <ESC>`<i\{<ESC>`>2la}<ESC>?\\{<Enter>a
-	autocmd FileType tex inoremap ,it \textit{}<++><Esc>T{i
-	autocmd FileType tex inoremap ,ct \textcite{}<++><Esc>T{i
-	autocmd FileType tex inoremap ,cp \parencite{}<++><Esc>T{i
-	autocmd FileType tex inoremap ,glos {\gll<Space><++><Space>\\<Enter><++><Space>\\<Enter>\trans{``<++>''}}<Esc>2k2bcw
-	autocmd FileType tex inoremap ,x \begin{xlist}<Enter>\ex<Space><Enter>\end{xlist}<Esc>kA<Space>
-	autocmd FileType tex inoremap ,ol \begin{enumerate}<Enter><Enter>\end{enumerate}<Enter><Enter><++><Esc>3kA\item<Space>
-	autocmd FileType tex inoremap ,ul \begin{itemize}<Enter><Enter>\end{itemize}<Enter><Enter><++><Esc>3kA\item<Space>
-	autocmd FileType tex inoremap ,li <Enter>\item<Space>
-	autocmd FileType tex inoremap ,ref \ref{}<Space><++><Esc>T{i
-	autocmd FileType tex inoremap ,tab \begin{tabular}<Enter><++><Enter>\end{tabular}<Enter><Enter><++><Esc>4kA{}<Esc>i
-	autocmd FileType tex inoremap ,ot \begin{tableau}<Enter>\inp{<++>}<Tab>\const{<++>}<Tab><++><Enter><++><Enter>\end{tableau}<Enter><Enter><++><Esc>5kA{}<Esc>i
-	autocmd FileType tex inoremap ,can \cand{}<Tab><++><Esc>T{i
-	autocmd FileType tex inoremap ,con \const{}<Tab><++><Esc>T{i
-	autocmd FileType tex inoremap ,v \vio{}<Tab><++><Esc>T{i
-	autocmd FileType tex inoremap ,a \href{}{<++>}<Space><++><Esc>2T{i
-	autocmd FileType tex inoremap ,sc \textsc{}<Space><++><Esc>T{i
-	autocmd FileType tex inoremap ,chap \chapter{}<Enter><Enter><++><Esc>2kf}i
-	autocmd FileType tex inoremap ,sec \section{}<Enter><Enter><++><Esc>2kf}i
-	autocmd FileType tex inoremap ,ssec \subsection{}<Enter><Enter><++><Esc>2kf}i
-	autocmd FileType tex inoremap ,sssec \subsubsection{}<Enter><Enter><++><Esc>2kf}i
-	autocmd FileType tex inoremap ,st <Esc>F{i*<Esc>f}i
-	autocmd FileType tex inoremap ,beg \begin{DELRN}<Enter><++><Enter>\end{DELRN}<Enter><Enter><++><Esc>4k0fR:MultipleCursorsFind<Space>DELRN<Enter>c
-	autocmd FileType tex inoremap ,up <Esc>/usepackage<Enter>o\usepackage{}<Esc>i
-	autocmd FileType tex nnoremap ,up /usepackage<Enter>o\usepackage{}<Esc>i
-	autocmd FileType tex inoremap ,tt \texttt{}<Space><++><Esc>T{i
-	autocmd FileType tex inoremap ,bt {\blindtext}
-	autocmd FileType tex inoremap ,nu $\varnothing$
-	autocmd FileType tex inoremap ,col \begin{columns}[T]<Enter>\begin{column}{.5\textwidth}<Enter><Enter>\end{column}<Enter>\begin{column}{.5\textwidth}<Enter><++><Enter>\end{column}<Enter>\end{columns}<Esc>5kA
-	autocmd FileType tex inoremap ,rn (\ref{})<++><Esc>F}i
-
-"""HTML
-	autocmd FileType html inoremap ,b <b></b><Space><++><Esc>FbT>i
-	autocmd FileType html inoremap ,it <em></em><Space><++><Esc>FeT>i
-	autocmd FileType html inoremap ,1 <h1></h1><Enter><Enter><++><Esc>2kf<i
-	autocmd FileType html inoremap ,2 <h2></h2><Enter><Enter><++><Esc>2kf<i
-	autocmd FileType html inoremap ,3 <h3></h3><Enter><Enter><++><Esc>2kf<i
-	autocmd FileType html inoremap ,p <p></p><Enter><Enter><++><Esc>02kf>a
-	autocmd FileType html inoremap ,a <a<Space>href=""><++></a><Space><++><Esc>14hi
-	autocmd FileType html inoremap ,e <a<Space>target="_blank"<Space>href=""><++></a><Space><++><Esc>14hi
-	autocmd FileType html inoremap ,ul <ul><Enter><li></li><Enter></ul><Enter><Enter><++><Esc>03kf<i
-	autocmd FileType html inoremap ,li <Esc>o<li></li><Esc>F>a
-	autocmd FileType html inoremap ,ol <ol><Enter><li></li><Enter></ol><Enter><Enter><++><Esc>03kf<i
-	autocmd FileType html inoremap ,im <img src="" alt="<++>"><++><esc>Fcf"a
-	autocmd FileType html inoremap ,td <td></td><++><Esc>Fdcit
-	autocmd FileType html inoremap ,tr <tr></tr><Enter><++><Esc>kf<i
-	autocmd FileType html inoremap ,th <th></th><++><Esc>Fhcit
-	autocmd FileType html inoremap ,tab <table><Enter></table><Esc>O
-	autocmd FileType html inoremap ,gr <font color="green"></font><Esc>F>a
-	autocmd FileType html inoremap ,rd <font color="red"></font><Esc>F>a
-	autocmd FileType html inoremap ,yl <font color="yellow"></font><Esc>F>a
-	autocmd FileType html inoremap ,dt <dt></dt><Enter><dd><++></dd><Enter><++><esc>2kcit
-	autocmd FileType html inoremap ,dl <dl><Enter><Enter></dl><enter><enter><++><esc>3kcc
-	autocmd FileType html inoremap &<space> &amp;<space>
-	autocmd FileType html inoremap á &aacute;
-	autocmd FileType html inoremap é &eacute;
-	autocmd FileType html inoremap í &iacute;
-	autocmd FileType html inoremap ó &oacute;
-	autocmd FileType html inoremap ú &uacute;
-	autocmd FileType html inoremap ä &auml;
-	autocmd FileType html inoremap ë &euml;
-	autocmd FileType html inoremap ï &iuml;
-	autocmd FileType html inoremap ö &ouml;
-	autocmd FileType html inoremap ü &uuml;
-	autocmd FileType html inoremap ã &atilde;
-	autocmd FileType html inoremap ẽ &etilde;
-	autocmd FileType html inoremap ĩ &itilde;
-	autocmd FileType html inoremap õ &otilde;
-	autocmd FileType html inoremap ũ &utilde;
-	autocmd FileType html inoremap ñ &ntilde;
-	autocmd FileType html inoremap à &agrave;
-	autocmd FileType html inoremap è &egrave;
-	autocmd FileType html inoremap ì &igrave;
-	autocmd FileType html inoremap ò &ograve;
-	autocmd FileType html inoremap ù &ugrave;
-
-
-""".bib
-	autocmd FileType bib inoremap ,a @article{<Enter>author<Space>=<Space>{<++>},<Enter>year<Space>=<Space>{<++>},<Enter>title<Space>=<Space>{<++>},<Enter>journal<Space>=<Space>{<++>},<Enter>volume<Space>=<Space>{<++>},<Enter>pages<Space>=<Space>{<++>},<Enter>}<Enter><++><Esc>8kA,<Esc>i
-	autocmd FileType bib inoremap ,b @book{<Enter>author<Space>=<Space>{<++>},<Enter>year<Space>=<Space>{<++>},<Enter>title<Space>=<Space>{<++>},<Enter>publisher<Space>=<Space>{<++>},<Enter>}<Enter><++><Esc>6kA,<Esc>i
-	autocmd FileType bib inoremap ,c @incollection{<Enter>author<Space>=<Space>{<++>},<Enter>title<Space>=<Space>{<++>},<Enter>booktitle<Space>=<Space>{<++>},<Enter>editor<Space>=<Space>{<++>},<Enter>year<Space>=<Space>{<++>},<Enter>publisher<Space>=<Space>{<++>},<Enter>}<Enter><++><Esc>8kA,<Esc>i
-
-"MARKDOWN
-	autocmd Filetype markdown,rmd map <leader>w yiWi[<esc>Ea](<esc>pa)
-	autocmd Filetype markdown,rmd inoremap ,n ---<Enter><Enter>
-	autocmd Filetype markdown,rmd inoremap ,b ****<++><Esc>F*hi
-	autocmd Filetype markdown,rmd inoremap ,s ~~~~<++><Esc>F~hi
-	autocmd Filetype markdown,rmd inoremap ,e **<++><Esc>F*i
-	autocmd Filetype markdown,rmd inoremap ,h ====<Space><++><Esc>F=hi
-	autocmd Filetype markdown,rmd inoremap ,i ![](<++>)<++><Esc>F[a
-	autocmd Filetype markdown,rmd inoremap ,a [](<++>)<++><Esc>F[a
-	autocmd Filetype markdown,rmd inoremap ,1 #<Space><Enter><++><Esc>kA
-	autocmd Filetype markdown,rmd inoremap ,2 ##<Space><Enter><++><Esc>kA
-	autocmd Filetype markdown,rmd inoremap ,3 ###<Space><Enter><++><Esc>kA
-	autocmd Filetype markdown,rmd inoremap ,l --------<Enter>
-	autocmd Filetype rmd inoremap ,r ```{r}<CR>```<CR><CR><esc>2kO
-	autocmd Filetype rmd inoremap ,p ```{python}<CR>```<CR><CR><esc>2kO
-	autocmd Filetype rmd inoremap ,c ```<cr>```<cr><cr><esc>2kO
-
-""".xml
-	autocmd FileType xml inoremap ,e <item><Enter><title><++></title><Enter><guid<space>isPermaLink="false"><++></guid><Enter><pubDate><Esc>:put<Space>=strftime('%a, %d %b %Y %H:%M:%S %z')<Enter>kJA</pubDate><Enter><link><++></link><Enter><description><![CDATA[<++>]]></description><Enter></item><Esc>?<title><enter>cit
-	autocmd FileType xml inoremap ,a <a href="<++>"><++></a><++><Esc>F"ci"

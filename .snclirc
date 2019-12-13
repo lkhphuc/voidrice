@@ -1,0 +1,10 @@
+[sncli]
+cfg_sn_username = liongates011@gmail.com
+cfg_sn_password_eval = pass tools/simplenote.com | head -n 1
+
+kb_edit_note = e
+kb_page_up = ctrl b
+kb_page_down = ctrl f
+kb_view_note_ext = o
+
+cfg_pager = /home/phuc/.local/bin/tools/mdless

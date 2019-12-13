@@ -1,0 +1,4 @@
+#!/bin/zsh
+# https://superuser.com/questions/1059781/what-exactly-is-in-bash-and-in-zsh
+/usr/bin/less -R -c =(mdv "$1")
+# /usr/bin/less -R -c =(mdv -A "$1") # light background (not yet supported)
